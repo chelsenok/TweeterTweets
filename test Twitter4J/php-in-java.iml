@@ -17,7 +17,9 @@
           <root url="jar://$MODULE_DIR$/lib/twitter4j-core-4.0.4.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/twitter4j-core-4.0.4-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

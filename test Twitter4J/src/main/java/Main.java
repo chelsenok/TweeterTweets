@@ -7,15 +7,6 @@ import java.util.List;
 public class Main {
 
     public static void main(String... args) {
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("5a1aVko1lY1tI63v9j8i5Jkub")
-                .setOAuthConsumerSecret("0c4dOURgIx5nBe3ELFpEtc2LHxVbVCPJ1dEsZMzFq96y1y0H8e")
-                .setOAuthAccessToken("831584849790111744-rPKZZfgm5Md9BHeu6uNkN89thlG05HI")
-                .setOAuthAccessTokenSecret("89ueDpgsD6A7DadRIa8ZKcVrERga6pFwVJd1Kq3QflK8v");
-
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
         List<Status> statuses = null;
         long was = 0;
         try {
