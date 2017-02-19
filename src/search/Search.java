@@ -1,23 +1,60 @@
 package search;
 
 import twitter4j.*;
-import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Search {
 
-    private final GeoLocation US_GEOLOCATION = new GeoLocation(37.1, -95.7);
-    private final double RADIUS = 2800;
-    private final Query.Unit UNIT = Query.Unit.km;
+    private enum UnitedStatesZones {
+        Center {
+            @Override
+            GeoLocation geoLocation() {
+                return new GeoLocation(40.23, -97.44);
+            }
 
-    private static Configuration sConfiguration;
+            @Override
+            double radius() {
+                return 2800;
+            }
+        },
+        Alaska {
+            @Override
+            GeoLocation geoLocation() {
+                return new GeoLocation(64.88, -154.19);
+            }
 
-    private StatusListener mListener;
-    private String mSince;
-    private String mUntil;
-    private String[] mQueries;
+            @Override
+            double radius() {
+                return 1700;
+            }
+        },
+        Hawaii {
+            @Override
+            GeoLocation geoLocation() {
+                return new GeoLocation(20.96, -157.13);
+            }
+
+            @Override
+            double radius() {
+                return 350;
+            }
+        };
+
+        abstract GeoLocation geoLocation();
+
+        abstract double radius();
+    }
+
+    private static final int GREAT_TWEETS_NUMBER = Integer.MAX_VALUE;
+    private static final int SESSION_TWEETS_NUMBER = 100;
+
+    private static Twitter sTwitter;
+
+    private SearchListener mListener;
+    private String mQuery;
 
     static {
         ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -26,39 +63,52 @@ public class Search {
                 .setOAuthConsumerSecret("UPvyfZg2WMNf69a5uJqtXuYnNXlXI5ADc2EaHnypzxIrn0zmi6")
                 .setOAuthAccessToken("385498014-3ODBkhcxlIO7qthICAJLJ2MzJkdGqR0pMkMgChqC")
                 .setOAuthAccessTokenSecret("j6WMid9xGO8QVBSkwUlvRDbpYieR6BBqkBm27YCZmEIAq");
-        sConfiguration = cb.build();
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        sTwitter = tf.getInstance();
     }
 
-    //YYYY-MM-DD
-    public Search(String since, String until, String... queries) {
-        mSince = since;
-        mUntil = until;
-        mQueries = queries;
-    }
-
-    public void addListener(StatusListener listener) {
+    public Search(String query, SearchListener listener) {
         mListener = listener;
+        mQuery = query;
     }
 
     public void start() {
-        for (String query :
-                mQueries) {
-            Query twitterQuery = new Query(query);
-            twitterQuery.setSince(mSince);
-            twitterQuery.setUntil(mUntil);
-            twitterQuery.setCount(100);
-            twitterQuery.setGeoCode(US_GEOLOCATION, RADIUS, UNIT);
+        for (UnitedStatesZones zone :
+                UnitedStatesZones.values()) {
+//            new Thread(() -> {
 
-            TwitterFactory tf = new TwitterFactory(sConfiguration);
-            Twitter twitter = tf.getInstance();
+                Query twitterQuery = new Query(mQuery);
+                twitterQuery.setGeoCode(zone.geoLocation(), zone.radius(), Query.Unit.km);
+                twitterQuery.setCount(SESSION_TWEETS_NUMBER);
 
-            try {
-                List<Status> statuses = twitter.search(twitterQuery).getTweets();
-                System.out.println(statuses.size());
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
+                List<Status> tweets = new ArrayList<>();
+                long lastID = Long.MAX_VALUE;
+
+                while (tweets.size() < GREAT_TWEETS_NUMBER) {
+                    try {
+                        QueryResult result = sTwitter.search(twitterQuery);
+                        List<Status> newStatuses = result.getTweets();
+
+                        for (Status t : newStatuses) {
+                            if (t.getId() < lastID) {
+                                lastID = t.getId();
+                            }
+                            if (t.getGeoLocation() != null) {
+                                tweets.add(t);
+                                if (tweets.size() == SESSION_TWEETS_NUMBER) {
+                                    mListener.onStatusesReady(new ArrayList<>(tweets), zone.name());
+                                    tweets.clear();
+                                }
+                            }
+                        }
+                        twitterQuery.setMaxId(lastID - 1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mListener.onStatusesReady(new ArrayList<>(tweets), zone.name());
+                        return;
+                    }
+                }
+//            }).start();
         }
     }
-
 }

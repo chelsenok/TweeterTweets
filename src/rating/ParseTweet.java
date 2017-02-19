@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class ParseTweet {
+class ParseTweet {
 
 //    private final String URL_REGEX = "/^(https?:\\/\\/)?([\\w\\.]+)\\.([a-z]{2,6}\\.?)(\\/[\\w\\.]*)*\\/?$/";
     private final String URL_REGEX = "http";

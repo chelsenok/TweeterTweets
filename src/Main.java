@@ -1,27 +1,16 @@
-import com.sun.deploy.util.StringUtils;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
-import rating.AssignRating;
-import rating.ParseTweet;
 import search.Search;
-
-import java.util.Arrays;
+import search.SearchListener;
 
 public class Main {
 
+    private static final SearchListener listener = (statuses, from) -> {
+        System.out.println("Get " + statuses.size() + " from " + from);
+//        d
+    };
+
     public static void main(String[] args) {
-        Double strings = new AssignRating().assignRatingToTweet("@PaoloAsteggiano love it!!!! Thank YOU!!!!");
-        System.out.println("Final value " + strings);
-
-
-
-
-
-
-
-
-//        Search search = new Search("2016-02-10", "2016-02-12", "friend");
-//        long time = System.currentTimeMillis();
-//        search.start();
-//        System.out.println("Hello World!  " + (System.currentTimeMillis() - time));
+//        Double strings = new AssignRating().assignRatingToTweet("@PaoloAsteggiano love");
+//        System.out.println("Final value " + strings);
+        new Search("trump", listener).start();
     }
 }
