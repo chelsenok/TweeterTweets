@@ -27,7 +27,7 @@ public class AssignRating {
     }
 
     private double getWordAssign(String str) {
-        try{
+        try {
             return sentiments.get(str);
         } catch (NullPointerException exc) {
             return 0;
