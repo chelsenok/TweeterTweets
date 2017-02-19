@@ -1,4 +1,4 @@
-import search.Search;
+import search.SearchAPI;
 import search.SearchListener;
 
 public class Main {
@@ -10,6 +10,6 @@ public class Main {
     public static void main(String[] args) {
 //        Double strings = new AssignRating().assignRatingToTweet("@PaoloAsteggiano love");
 //        System.out.println("Final value " + strings);
-        new Search("dish", listener).start();
+        new SearchAPI("this", listener).start();
     }
 }

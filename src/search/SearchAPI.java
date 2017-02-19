@@ -5,7 +5,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.List;
 
-public class Search {
+public class SearchAPI {
 
     private enum UnitedStatesZones {
         Center {
@@ -65,7 +65,7 @@ public class Search {
         sTwitter = tf.getInstance();
     }
 
-    public Search(String query, SearchListener listener) {
+    public SearchAPI(String query, SearchListener listener) {
         mListener = listener;
         mQuery = query;
     }
