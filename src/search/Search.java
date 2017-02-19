@@ -47,7 +47,7 @@ public class Search {
         abstract double radius();
     }
 
-    private static final int SESSION_TWEETS_NUMBER = 1000;
+    private static final int SESSION_TWEETS_NUMBER = 10;
 
     private static Twitter sTwitter;
 
@@ -78,12 +78,11 @@ public class Search {
                 Query twitterQuery = new Query(mQuery);
                 twitterQuery.setGeoCode(zone.geoLocation(), zone.radius(), Query.Unit.km);
                 twitterQuery.setCount(SESSION_TWEETS_NUMBER);
-                long lastID = Long.MAX_VALUE;
 
+                long lastID = Long.MAX_VALUE;
                 while (true) {
                     try {
-                        QueryResult result = sTwitter.search(twitterQuery);
-                        List<Status> newStatuses = result.getTweets();
+                        List<Status> newStatuses = sTwitter.search(twitterQuery).getTweets();
 
                         for (Status t : newStatuses) {
                             if (t.getId() < lastID) {
@@ -94,6 +93,7 @@ public class Search {
                                 System.out.println(zone.name());
                             }
                         }
+
                         twitterQuery.setMaxId(lastID - 1);
                     } catch (Exception e) {
                         e.printStackTrace();

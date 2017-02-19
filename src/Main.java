@@ -10,6 +10,6 @@ public class Main {
     public static void main(String[] args) {
 //        Double strings = new AssignRating().assignRatingToTweet("@PaoloAsteggiano love");
 //        System.out.println("Final value " + strings);
-        new Search("car", listener).start();
+        new Search("dish", listener).start();
     }
 }
