@@ -1,3 +1,6 @@
+import gmap.geocoding.AreaLevel;
+import gmap.geocoding.JSONResponse;
+import gmap.geocoding.Location;
 import search.Search;
 import search.SearchListener;
 
@@ -8,8 +11,13 @@ public class Main {
     };
 
     public static void main(String[] args) {
-//        Double strings = new AssignRating().assignRatingToTweet("@PaoloAsteggiano love");
-//        System.out.println("Final value " + strings);
-        new Search("car", listener).start();
+        JSONResponse location = new Location().getLocation(-28.565576, 131.797518, AreaLevel.AREA_LEVEL_1);
+        if(location.getStatusCodes().toString() == "OK") {
+            System.out.println(location.getStateLongName());
+            System.out.println(location.getStateShortName());
+        } else {
+            System.out.println("ERROR: " + location.getStatusCodes());
+        }
+//        new Search("car", listener).start();
     }
 }
