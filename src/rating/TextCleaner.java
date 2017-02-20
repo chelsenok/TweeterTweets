@@ -3,24 +3,23 @@ package rating;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class ParseTweet {
+abstract class TextCleaner {
 
-//        private final String URL_REGEX = "/^(https?:\\/\\/)?([\\w\\.]+)\\.([a-z]{2,6}\\.?)(\\/[\\w\\.]*)*\\/?$/";
-    private final String URL_REGEX = "http";
-    private final String LOGIN = "@";
+    private static final String URL_REGEX = "http";
+    private static final String LOGIN = "@";
 
-    String[] cleanTweet(String text) {
+    public static String[] clean(String text) {
         text = leaveLetters(text);
         String words[] = text.split(" ");
         words = removeDirt(words);
         return words;
     }
 
-    private String leaveLetters(String text) {
+    private static String leaveLetters(String text) {
         return text.replaceAll("[^'a-zA-Z@ ]", "");
     }
 
-    private String[] removeDirt(String[] text) {
+    private static String[] removeDirt(String[] text) {
         ArrayList<String> strings = new ArrayList<>(Arrays.asList(text));
 
         strings.removeIf(s -> s.contains(URL_REGEX));

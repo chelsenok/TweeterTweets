@@ -14,6 +14,7 @@ res/all_tweets.txt
 bin/
 gen/
 out/
+src/Main.java
 
 # Gradle files
 .gradle/

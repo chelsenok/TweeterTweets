@@ -39,8 +39,8 @@ public class AssignRating {
     }
 
     public float assignTweetRating(String text) {
-//        text = new TextCleaner.clean(text.toLowerCase());
-        mTweetWords = new ArrayList<>(Arrays.asList(text.split(" ")));
+        String[] words = TextCleaner.clean(text.toLowerCase());
+        mTweetWords = new ArrayList<>(Arrays.asList(words));
         mValue = 0;
         mCount = 0;
 
@@ -52,6 +52,9 @@ public class AssignRating {
     }
 
     private void calculate(int quantity) {
+        if (quantity == 0) {
+            return;
+        }
         for (int i = 0; i + quantity <= mTweetWords.size(); i++) {
             String str = "";
             for (String s :
@@ -61,18 +64,17 @@ public class AssignRating {
             System.out.println(str);
             mValue += getWordAssign(quantity, str.substring(0, str.length() - 1));
         }
-        if (quantity != 1) {
-            calculate(quantity - 1);
-        }
+        calculate(quantity - 1);
     }
 
     private float getWordAssign(int quantity, String str) {
+        float value;
         try {
-            float value = mQuantitySentimentsMap.get(quantity).get(str);
-            mCount++;
-            return value;
+            value = mQuantitySentimentsMap.get(quantity).get(str);
         } catch (NullPointerException exc) {
             return 0;
         }
+        mCount++;
+        return value;
     }
 }
