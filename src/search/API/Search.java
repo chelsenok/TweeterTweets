@@ -1,52 +1,16 @@
-package search;
+package search.API;
 
+import search.SearchListener;
 import tweet.Tweet;
-import twitter4j.*;
+import twitter4j.Query;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.List;
 
-public class SearchAPI {
-
-    private enum UnitedStatesZones {
-        Center {
-            @Override
-            GeoLocation geoLocation() {
-                return new GeoLocation(40.23, -97.44);
-            }
-
-            @Override
-            double radius() {
-                return 2800;
-            }
-        },
-        Alaska {
-            @Override
-            GeoLocation geoLocation() {
-                return new GeoLocation(64.88, -154.19);
-            }
-
-            @Override
-            double radius() {
-                return 1700;
-            }
-        },
-        Hawaii {
-            @Override
-            GeoLocation geoLocation() {
-                return new GeoLocation(20.96, -157.13);
-            }
-
-            @Override
-            double radius() {
-                return 350;
-            }
-        };
-
-        abstract GeoLocation geoLocation();
-
-        abstract double radius();
-    }
+public class Search {
 
     private static final int SESSION_TWEETS_NUMBER = 10;
 
@@ -66,7 +30,7 @@ public class SearchAPI {
         sTwitter = tf.getInstance();
     }
 
-    public SearchAPI(String query, SearchListener listener) {
+    public Search(String query, SearchListener listener) {
         mListener = listener;
         mQuery = query;
     }
@@ -90,8 +54,13 @@ public class SearchAPI {
                                 lastID = t.getId();
                             }
                             if (t.getGeoLocation() != null) {
-                                mListener.onTweetReady(new Tweet(t.getText(), t.getGeoLocation().getLatitude(), t.getGeoLocation().getLongitude()));
-                                System.out.println(zone.name());
+                                mListener.onTweetReady(new Tweet(
+                                        t.getText(),
+                                        t.getGeoLocation().getLatitude(),
+                                        t.getGeoLocation().getLongitude(),
+                                        t.getFavoriteCount(),
+                                        t.getRetweetCount()
+                                ));
                             }
                         }
 

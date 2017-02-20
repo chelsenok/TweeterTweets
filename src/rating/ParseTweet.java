@@ -1,16 +1,11 @@
 package rating;
 
-import jdk.nashorn.api.scripting.URLReader;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Pattern;
 
 class ParseTweet {
 
-//    private final String URL_REGEX = "/^(https?:\\/\\/)?([\\w\\.]+)\\.([a-z]{2,6}\\.?)(\\/[\\w\\.]*)*\\/?$/";
+    //    private final String URL_REGEX = "/^(https?:\\/\\/)?([\\w\\.]+)\\.([a-z]{2,6}\\.?)(\\/[\\w\\.]*)*\\/?$/";
     private final String URL_REGEX = "http";
 
     String[] cleanTweet(String text) {
@@ -20,7 +15,7 @@ class ParseTweet {
         return words;
     }
 
-    private String leaveLetters(String text){
+    private String leaveLetters(String text) {
         return text.replaceAll("[^'a-zA-Z ]", "");
     }
 
