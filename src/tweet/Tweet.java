@@ -18,7 +18,7 @@ public class Tweet {
         return mLon;
     }
 
-    public Tweet(String text, double lat, double lon, int likes, int retweets) {
+    public Tweet(String text, double lat, double lon) {
         this.mText = text;
         this.mLat = lat;
         this.mLon = lon;

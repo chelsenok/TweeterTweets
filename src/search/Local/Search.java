@@ -39,7 +39,7 @@ public class Search implements TweetParser {
             lat = Double.parseDouble(geo[0]);
             lon = Double.parseDouble(geo[1]);
 
-            return new Tweet(parts[3], lat, lon, 0, 0);
+            return new Tweet(parts[3], lat, lon);
         } catch (Exception ignored) {
             return null;
         }

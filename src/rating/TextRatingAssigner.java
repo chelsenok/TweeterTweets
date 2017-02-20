@@ -2,11 +2,10 @@ package rating;
 
 import java.util.*;
 
-public class AssignRating {
+public class TextRatingAssigner {
 
     // TODO: 17.02.2017 make list of on/at/in/the/a to concatenate words into collocation
     // TODO: 19.02.2017 count retweets and likes
-    // TODO: 20.02.2017 delete founded words from mTweetWords
 
     private final String DICTIONARY_NAME = "res/sentiments.csv";
 
@@ -14,9 +13,9 @@ public class AssignRating {
     private float mValue;
     private int mCount;
     private ArrayList<String> mTweetWords;
-    private static AssignRating mInstance;
+    private static TextRatingAssigner mInstance;
 
-    private AssignRating() {
+    private TextRatingAssigner() {
         LinkedHashMap<String, Float> sentiments = new Reader().readSentiments(DICTIONARY_NAME);
         mQuantitySentimentsMap = new HashMap<>();
         for (Map.Entry<String, Float> entry :
@@ -31,14 +30,14 @@ public class AssignRating {
         }
     }
 
-    public static AssignRating getInstance() {
+    public static TextRatingAssigner getInstance() {
         if (mInstance == null) {
-            mInstance = new AssignRating();
+            mInstance = new TextRatingAssigner();
         }
         return mInstance;
     }
 
-    public float assignTweetRating(String text) {
+    public float get(String text) {
         String[] words = TextCleaner.clean(text.toLowerCase());
         mTweetWords = new ArrayList<>(Arrays.asList(words));
         mValue = 0;
@@ -55,26 +54,39 @@ public class AssignRating {
         if (quantity == 0) {
             return;
         }
+        boolean isChecked = false;
         for (int i = 0; i + quantity <= mTweetWords.size(); i++) {
-            String str = "";
-            for (String s :
-                    mTweetWords.subList(i, i + quantity)) {
-                str += s + " ";
+            float value = getWordAssign(quantity, mTweetWords.subList(i, i + quantity));
+            if (value != 0) {
+                mValue += value;
+                isChecked = true;
             }
-            System.out.println(str);
-            mValue += getWordAssign(quantity, str.substring(0, str.length() - 1));
         }
-        calculate(quantity - 1);
+        if (isChecked && quantity != 1) {
+            calculate(mTweetWords.size());
+        } else {
+            calculate(quantity - 1);
+        }
     }
 
-    private float getWordAssign(int quantity, String str) {
+    private float getWordAssign(int quantity, List<String> subList) {
+        String str = "";
+        for (String s : subList
+                ) {
+            str += s + " ";
+        }
+
+        System.out.println(str);
+
         float value;
         try {
-            value = mQuantitySentimentsMap.get(quantity).get(str);
+            value = mQuantitySentimentsMap.get(quantity).get(str.substring(0, str.length() - 1));
+            System.out.println("*******   " + str + "   *******");
         } catch (NullPointerException exc) {
             return 0;
         }
         mCount++;
+        mTweetWords.removeAll(subList);
         return value;
     }
 }
