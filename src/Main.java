@@ -1,3 +1,5 @@
+import gmap.geocoding.AreaLevel;
+import rating.AssignRating;
 import search.Local.Query;
 import search.Local.Search;
 import search.SearchListener;
@@ -28,7 +30,10 @@ public class Main {
     };
 
     public static void main(String... args) {
+//        double value = new AssignRating().assignRatingToTweet("Nick is twitting about this message");
+//        System.out.println(value);
+        new AssignRating().assignRatingToTweet("@Her https://t.co/adlkj look here, and @You look out http://bloomberg.com");
 //        new Search("friend", listener).start();
-        new Search(Query.Sandwich, listener).start();
+//        new Search(Query.Sandwich, listener).start();
     }
 }

@@ -16,11 +16,10 @@ public class AssignRating {
 
     public double assignRatingToTweet(String text) {
 
-        String[] tweetWords = new ParseTweet().cleanTweet(text.toLowerCase());
-
         double value = 0;
-        for (String str : tweetWords) {
+        for (String str : new ParseTweet().cleanTweet(text.toLowerCase())) {
             value += getWordAssign(str);
+            System.out.println(str + " " + value);
         }
 
         return value;
