@@ -1,5 +1,6 @@
 package search;
 
+import tweet.Tweet;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -89,7 +90,7 @@ public class SearchAPI {
                                 lastID = t.getId();
                             }
                             if (t.getGeoLocation() != null) {
-                                mListener.onStatusesReady(t);
+                                mListener.onTweetReady(new Tweet(t.getText(), t.getGeoLocation().getLatitude(), t.getGeoLocation().getLongitude()));
                                 System.out.println(zone.name());
                             }
                         }

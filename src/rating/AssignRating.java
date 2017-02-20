@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 public class AssignRating {
 
-    private final String DICTIONARY_NAME = "sentiments.csv";
+    private final String DICTIONARY_NAME = "res/sentiments.csv";
 
     private final LinkedHashMap<String, Double> sentiments;
 

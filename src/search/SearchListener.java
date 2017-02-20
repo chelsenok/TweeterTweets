@@ -1,9 +1,9 @@
 package search;
 
-import twitter4j.Status;
+import tweet.Tweet;
 
 public interface SearchListener {
 
-    void onStatusesReady(Status status);
+    void onTweetReady(Tweet tweet);
 
 }
