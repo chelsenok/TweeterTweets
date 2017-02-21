@@ -24,7 +24,7 @@ public class JSONResponse {
         return mStateShortName;
     }
 
-    public StatusCodes getStatusCodes() {
+    public StatusCodes getStatusCode() {
         return mStatusCodes;
     }
 }

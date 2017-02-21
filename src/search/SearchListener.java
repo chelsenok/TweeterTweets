@@ -4,6 +4,6 @@ import tweet.Tweet;
 
 public interface SearchListener {
 
-    void onTweetReady(Tweet tweet);
+    int onTweetReady(Tweet tweet);
 
 }

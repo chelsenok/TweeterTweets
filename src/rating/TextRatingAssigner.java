@@ -5,17 +5,18 @@ import java.util.*;
 public class TextRatingAssigner {
 
     // TODO: 17.02.2017 make list of on/at/in/the/a to concatenate words into collocation
-    // TODO: 19.02.2017 count retweets and likes
+    // TODO: 21.02.2017 For each sentence !!!
+    // TODO: 21.02.2017 NOT TO CONCATINATE PARTS AFTER DETECTION 
 
-    private final String DICTIONARY_NAME = "res/sentiments.csv";
+    private static final String DICTIONARY_NAME = "res/sentiments.csv";
 
-    private HashMap<Integer, HashMap<String, Float>> mQuantitySentimentsMap;
+    private static HashMap<Integer, HashMap<String, Float>> mQuantitySentimentsMap;
+
     private float mValue;
     private int mCount;
     private ArrayList<String> mTweetWords;
-    private static TextRatingAssigner mInstance;
 
-    private TextRatingAssigner() {
+    static {
         LinkedHashMap<String, Float> sentiments = new Reader().readSentiments(DICTIONARY_NAME);
         mQuantitySentimentsMap = new HashMap<>();
         for (Map.Entry<String, Float> entry :
@@ -30,11 +31,8 @@ public class TextRatingAssigner {
         }
     }
 
-    public static TextRatingAssigner getInstance() {
-        if (mInstance == null) {
-            mInstance = new TextRatingAssigner();
-        }
-        return mInstance;
+    public TextRatingAssigner() {
+
     }
 
     public float get(String text) {
@@ -76,12 +74,12 @@ public class TextRatingAssigner {
             str += s + " ";
         }
 
-        System.out.println(str);
+//        System.out.println(str);
 
         float value;
         try {
             value = mQuantitySentimentsMap.get(quantity).get(str.substring(0, str.length() - 1));
-            System.out.println("*******   " + str + "   *******");
+//            System.out.println("*******   " + str + "   *******");
         } catch (NullPointerException exc) {
             return 0;
         }

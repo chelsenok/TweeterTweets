@@ -34,7 +34,7 @@ class HttpClient {
             InputStream inputStream = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            String line = "";
+            String line;
 
             while ((line = reader.readLine()) != null) {
                 text += line;

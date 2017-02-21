@@ -21,9 +21,12 @@ public class Search implements TweetParser {
     public void start() {
         try (BufferedReader br = new BufferedReader(new FileReader(mQuery.path()))) {
             for (String line; (line = br.readLine()) != null; ) {
-                mListener.onTweetReady(get(line));
+                if (mListener.onTweetReady(get(line)) == 1) {
+                    return;
+                }
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -40,7 +43,8 @@ public class Search implements TweetParser {
             lon = Double.parseDouble(geo[1]);
 
             return new Tweet(parts[3], lat, lon);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

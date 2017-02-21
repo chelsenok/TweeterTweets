@@ -11,6 +11,8 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.util.HashMap;
 import java.util.List;
 
+// TODO: 21.02.2017 Retweets
+
 public class Search {
 
     private static final int SESSION_TWEETS_NUMBER = 200;
@@ -81,11 +83,13 @@ public class Search {
                                 lastID = t.getId();
                             }
                             if (t.getGeoLocation() != null) {
-                                mListener.onTweetReady(new Tweet(
+                                if (mListener.onTweetReady(new Tweet(
                                         t.getText(),
                                         t.getGeoLocation().getLatitude(),
                                         t.getGeoLocation().getLongitude()
-                                ));
+                                )) == 1) {
+                                    return;
+                                }
                             }
                         }
 
