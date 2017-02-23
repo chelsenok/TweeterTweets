@@ -4,10 +4,6 @@ import java.util.*;
 
 public class TextRatingAssigner {
 
-    // TODO: 17.02.2017 make list of on/at/in/the/a to concatenate words into collocation
-    // TODO: 21.02.2017 For each sentence !!!
-    // TODO: 21.02.2017 NOT TO CONCATINATE PARTS AFTER DETECTION 
-
     private static final String DICTIONARY_NAME = "res/sentiments.csv";
 
     private static HashMap<Integer, HashMap<String, Float>> mQuantitySentimentsMap;
@@ -36,12 +32,10 @@ public class TextRatingAssigner {
     }
 
     public float get(String text) {
-        String[] words = TextCleaner.clean(text.toLowerCase());
-        mTweetWords = new ArrayList<>(Arrays.asList(words));
         mValue = 0;
         mCount = 0;
 
-        calculate(mTweetWords.size());
+        startCalculationForEach(OnSentenceSeparator.separate(text));
         if (mCount != 0) {
             return mValue / mCount;
         }
@@ -54,7 +48,7 @@ public class TextRatingAssigner {
         }
         boolean isChecked = false;
         for (int i = 0; i + quantity <= mTweetWords.size(); i++) {
-            float value = getWordAssign(quantity, mTweetWords.subList(i, i + quantity));
+            float value = getWordAssign(quantity, i, i + quantity);
             if (value != 0) {
                 mValue += value;
                 isChecked = true;
@@ -67,24 +61,54 @@ public class TextRatingAssigner {
         }
     }
 
-    private float getWordAssign(int quantity, List<String> subList) {
-        String str = "";
-        for (String s : subList
-                ) {
-            str += s + " ";
+    private void startCalculationForEach(ArrayList<String> sentences) {
+        for (String text :
+                sentences) {
+            String[] words = TextCleaner.clean(text.toLowerCase());
+            mTweetWords = new ArrayList<>(Arrays.asList(words));
+            calculate(mTweetWords.size());
         }
+    }
 
-//        System.out.println(str);
+    private float getWordAssign(int quantity, int from, int to) {
+        List<String> subList = mTweetWords.subList(from, to);
+        String str = stringFromList(subList);
 
         float value;
         try {
-            value = mQuantitySentimentsMap.get(quantity).get(str.substring(0, str.length() - 1));
-//            System.out.println("*******   " + str + "   *******");
+            value = mQuantitySentimentsMap.get(quantity).get(str);
         } catch (NullPointerException exc) {
             return 0;
         }
         mCount++;
-        mTweetWords.removeAll(subList);
+
+        int[][] arrays = new int[][]{
+                new int[]{
+                        0, from
+                },
+                new int[]{
+                        to, mTweetWords.size()
+                }
+        };
+        ArrayList<String> twice = new ArrayList<>();
+        for (int[] array :
+                arrays) {
+            try {
+                twice.add(stringFromList(mTweetWords.subList(array[0], array[1])));
+            } catch (Exception ignored) {
+            }
+        }
+
+        startCalculationForEach(twice);
         return value;
+    }
+
+    private String stringFromList(List<String> list) {
+        String str = "";
+        for (String s : list
+                ) {
+            str += s + " ";
+        }
+        return str.substring(0, str.length() - 1);
     }
 }
