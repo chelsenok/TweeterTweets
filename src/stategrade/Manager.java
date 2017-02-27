@@ -1,7 +1,5 @@
 package stategrade;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +21,17 @@ public class Manager {
         return sInstance;
     }
 
+    public HashMap<String, String> getStateAverage() {
+        HashMap<String, String> map = new HashMap<>();
+
+        for (Map.Entry<String, AverageGrade> entry :
+                mStateGradeHashMap.entrySet()) {
+            map.put(entry.getKey(), String.valueOf(entry.getValue().getAverage()));
+        }
+
+        return map;
+    }
+
     public synchronized float refresh(String state, float grade) {
         if (!mStateGradeHashMap.containsKey(state)) {
             mStateGradeHashMap.put(state, new AverageGrade());
@@ -31,40 +40,36 @@ public class Manager {
     }
 
     public float getMin() {
-        try {
-            return getExtra(Float.class.getDeclaredMethod("min"));
-        } catch (NoSuchMethodException e) {
-            return 0;
-        }
-    }
-
-    public float getMax() {
-        try {
-            return getExtra(Float.class.getDeclaredMethod("max"));
-        } catch (NoSuchMethodException e) {
-            return 0;
-        }
-    }
-
-    private float getExtra(Method method) {
-        float value;
-        if (method.getName().equals("min")) {
-            value = Float.MAX_VALUE;
-        } else if (method.getName().equals("max")) {
-            value = Float.MIN_VALUE;
-        } else {
-            return 0;
-        }
+        float value = Float.MAX_VALUE;
 
         for (Map.Entry<String, AverageGrade> entry :
                 mStateGradeHashMap.entrySet()) {
-            try {
-                value = (float) method.invoke(Float.class, value, entry.getValue().getAverage());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+            float current = entry.getValue().getAverage();
+            if (current < value) {
+                value = current;
             }
         }
 
+        if (value == Float.MAX_VALUE) {
+            return 0;
+        }
+        return value;
+    }
+
+    public float getMax() {
+        float value = Float.MIN_VALUE;
+
+        for (Map.Entry<String, AverageGrade> entry :
+                mStateGradeHashMap.entrySet()) {
+            float current = entry.getValue().getAverage();
+            if (current > value) {
+                value = current;
+            }
+        }
+
+        if (value == Float.MIN_VALUE) {
+            return 0;
+        }
         return value;
     }
 }
