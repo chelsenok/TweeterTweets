@@ -1,4 +1,4 @@
-package stategrademanager;
+package stategrade;
 
 class AverageGrade {
 
@@ -12,8 +12,11 @@ class AverageGrade {
 
     public float refresh(float grade) {
         float amount = mAverage * mCount + grade;
-        mCount++;
-        return mAverage = amount / mCount;
+        return mAverage = amount / ++mCount;
+    }
+
+    public float getAverage() {
+        return mAverage;
     }
 
 }

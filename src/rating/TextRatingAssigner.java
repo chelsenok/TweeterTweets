@@ -43,21 +43,20 @@ public class TextRatingAssigner {
     }
 
     private void calculate(int quantity) {
-        if (quantity == 0) {
-            return;
-        }
         boolean isChecked = false;
-        for (int i = 0; i + quantity <= mTweetWords.size(); i++) {
+        for (int i = 0; mTweetWords != null && i + quantity <= mTweetWords.size(); i++) {
             float value = getWordAssign(quantity, i, i + quantity);
             if (value != 0) {
                 mValue += value;
                 isChecked = true;
             }
         }
-        if (isChecked && quantity != 1) {
-            calculate(mTweetWords.size());
-        } else {
-            calculate(quantity - 1);
+        if (mTweetWords != null && quantity > 1) {
+            if (isChecked) {
+                calculate(mTweetWords.size());
+            } else {
+                calculate(quantity - 1);
+            }
         }
     }
 
@@ -71,13 +70,12 @@ public class TextRatingAssigner {
     }
 
     private float getWordAssign(int quantity, int from, int to) {
-        List<String> subList = mTweetWords.subList(from, to);
-        String str = stringFromList(subList);
-
         float value;
         try {
+            List<String> subList = mTweetWords.subList(from, to);
+            String str = stringFromList(subList);
             value = mQuantitySentimentsMap.get(quantity).get(str);
-        } catch (NullPointerException exc) {
+        } catch (Exception exc) {
             return 0;
         }
         mCount++;
@@ -99,7 +97,11 @@ public class TextRatingAssigner {
             }
         }
 
-        startCalculationForEach(twice);
+        if (twice.size() != 0) {
+            startCalculationForEach(twice);
+        } else {
+            mTweetWords = null;
+        }
         return value;
     }
 
