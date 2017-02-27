@@ -1,5 +1,6 @@
 package gmap.drawer;
 
+import gmap.JSONParser.AreaToDraw;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;

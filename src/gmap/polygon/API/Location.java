@@ -1,4 +1,4 @@
-package gmap.geocoding;
+package gmap.polygon.API;
 
 import twitter4j.JSONObject;
 
@@ -8,13 +8,13 @@ public class Location {
     private final String GMAPS_GEOCODE_QUERY = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
 
-    public JSONResponse getLocation(double lat, double lon, AreaLevel areaLevel) {
+    public JSONResponse getLocation(float lat, float lon, AreaLevel areaLevel) {
         JSONObject jsonObject = new HttpClient().getJSON(GMAPS_GEOCODE_QUERY + getLatLon(lat, lon) + areaLevel.value() + GMAPS_API_KEY);
 
         return parseJSON(jsonObject);
     }
 
-    private String getLatLon(double latitude, double longitude) {
+    private String getLatLon(float latitude, float longitude) {
         return String.valueOf(latitude) + "," + String.valueOf(longitude);
     }
 

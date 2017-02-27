@@ -1,4 +1,4 @@
-package gmap.geocoding;
+package gmap.polygon.API;
 
 import twitter4j.JSONException;
 import twitter4j.JSONObject;

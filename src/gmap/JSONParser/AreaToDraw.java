@@ -1,4 +1,4 @@
-package gmap.drawer;
+package gmap.JSONParser;
 
 import java.awt.*;
 import java.util.ArrayList;

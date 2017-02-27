@@ -3,22 +3,22 @@ package tweet;
 public class Tweet {
 
     private String mText;
-    private double mLat;
-    private double mLon;
+    private float mLat;
+    private float mLon;
 
     public String getText() {
         return mText;
     }
 
-    public double getLat() {
+    public float getLat() {
         return mLat;
     }
 
-    public double getLon() {
+    public float getLon() {
         return mLon;
     }
 
-    public Tweet(String text, double lat, double lon) {
+    public Tweet(String text, float lat, float lon) {
         this.mText = text;
         this.mLat = lat;
         this.mLon = lon;

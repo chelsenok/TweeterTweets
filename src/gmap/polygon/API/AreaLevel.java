@@ -1,4 +1,4 @@
-package gmap.geocoding;
+package gmap.polygon.API;
 
 public enum AreaLevel {
     AREA_LEVEL_1 {

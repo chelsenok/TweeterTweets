@@ -1,4 +1,4 @@
-package gmap.drawer;
+package gmap.JSONParser;
 
 import twitter4j.JSONArray;
 import twitter4j.JSONException;
@@ -14,15 +14,21 @@ import java.util.Scanner;
 
 public class Reader {
 
-    public ArrayList<AreaToDraw> readPoints(String fileName) {
-        try (Scanner scanner = new Scanner(new FileReader(fileName))) {
-            return parseJson(scanner.nextLine());
+    private ArrayList<AreaToDraw> prevQuery;
+    private String prevFileName;
 
-        } catch (FileNotFoundException | JSONException e) {
-            e.printStackTrace();
+    public ArrayList<AreaToDraw> readPoints(String fileName) {
+        if (!prevFileName.equals(fileName)) {
+            prevFileName = fileName;
+            try (Scanner scanner = new Scanner(new FileReader(fileName))) {
+                prevQuery = parseJson(scanner.nextLine());
+
+            } catch (FileNotFoundException | JSONException e) {
+                prevQuery = null;
+            }
         }
 
-        return null;
+        return prevQuery;
     }
 
     private ArrayList<AreaToDraw> parseJson(String text) throws JSONException {
