@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class Manager {
 
-    //// TODO: 25.02.2017 getExtra
-
     private static Manager sInstance;
     private HashMap<String, AverageGrade> mStateGradeHashMap;
 

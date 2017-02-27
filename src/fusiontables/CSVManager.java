@@ -71,9 +71,9 @@ public abstract class CSVManager {
             for (HashMap<String, String> map :
                     mapArrayList) {
                 writer.print(LINE_SEPARATOR);
-                for (Map.Entry<String, String> entry :
-                        map.entrySet()) {
-                    writer.print(entry.getValue() + SEPARATOR);
+                for (String key :
+                        sKeys) {
+                    writer.print(map.get(key) + SEPARATOR);
                 }
             }
 
