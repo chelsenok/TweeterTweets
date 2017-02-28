@@ -85,8 +85,8 @@ public class Search {
                             if (t.getGeoLocation() != null) {
                                 if (mListener.onTweetReady(new Tweet(
                                         t.getText(),
-                                        t.getGeoLocation().getLatitude(),
-                                        t.getGeoLocation().getLongitude()
+                                        (float)t.getGeoLocation().getLatitude(),
+                                        (float)t.getGeoLocation().getLongitude()
                                 )) == 1) {
                                     return;
                                 }

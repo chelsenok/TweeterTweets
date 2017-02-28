@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Reader {
 
     private ArrayList<AreaToDraw> prevQuery;
-    private String prevFileName;
+    private String prevFileName = "";
 
     public ArrayList<AreaToDraw> readPoints(String fileName) {
         if (!prevFileName.equals(fileName)) {
@@ -52,7 +52,6 @@ public class Reader {
                     break;
                 default:
             }
-
             JSONArray statesPoints = states.getJSONArray(key);
             ArrayList<ArrayList<Point>> stateCoordinate = new ArrayList<>();
             for (int z = 0; !statesPoints.isNull(z); z++) {
