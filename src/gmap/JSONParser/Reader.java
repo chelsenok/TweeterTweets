@@ -16,6 +16,7 @@ public class Reader {
 
     private ArrayList<AreaToDraw> prevQuery;
     private String prevFileName;
+    private Offseter mOffseter;
 
     public ArrayList<AreaToDraw> readPoints(String fileName) {
         if (!prevFileName.equals(fileName)) {
@@ -29,6 +30,13 @@ public class Reader {
         }
 
         return prevQuery;
+    }
+
+    public Reader(Offseter offseter) {
+        mOffseter = offseter;
+    }
+
+    public Reader() {
     }
 
     private ArrayList<AreaToDraw> parseJson(String text) throws JSONException {

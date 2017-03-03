@@ -7,6 +7,17 @@ public class Location {
     private final String GMAPS_API_KEY = "&key=AIzaSyDcDiBmRg_NQeo1yuT3YMk_-yid8h7My0Y";
     private final String GMAPS_GEOCODE_QUERY = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
+    private static Location sInstance;
+    private Location() {
+
+    }
+
+    public static Location getInstance() {
+        if (sInstance == null) {
+            sInstance = new Location();
+        }
+        return sInstance;
+    }
 
     public JSONResponse getLocation(float lat, float lon, AreaLevel areaLevel) {
         JSONObject jsonObject = new HttpClient().getJSON(GMAPS_GEOCODE_QUERY + getLatLon(lat, lon) + areaLevel.value() + GMAPS_API_KEY);
