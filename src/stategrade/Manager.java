@@ -30,6 +30,14 @@ public class Manager {
         return map;
     }
 
+    public Float getStateAverage(String name) {
+        try {
+            return mStateGradeHashMap.get(name).getAverage();
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
     public synchronized float refresh(String state, float grade) {
         if (!mStateGradeHashMap.containsKey(state)) {
             mStateGradeHashMap.put(state, new AverageGrade());

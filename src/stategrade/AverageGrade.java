@@ -1,5 +1,6 @@
 package stategrade;
 
+
 class AverageGrade {
 
     private float mAverage;
@@ -18,5 +19,7 @@ class AverageGrade {
     public float getAverage() {
         return mAverage;
     }
+
+
 
 }

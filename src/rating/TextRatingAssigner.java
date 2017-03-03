@@ -34,7 +34,7 @@ public class TextRatingAssigner {
     public float get(String text) {
         mValue = 0;
         mCount = 0;
-
+        // TODO: 28.02.2017 not devide on mCount
         startCalculationForEach(OnSentenceSeparator.separate(text));
         if (mCount != 0) {
             return mValue / mCount;

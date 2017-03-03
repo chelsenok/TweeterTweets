@@ -5,6 +5,8 @@ import twitter4j.JSONObject;
 public class Location {
 
     private final String GMAPS_API_KEY = "&key=AIzaSyDcDiBmRg_NQeo1yuT3YMk_-yid8h7My0Y";
+//    private final String GMAPS_API_KEY = "&key=AIzaSyATOYFPG3cc7A2VGJsd27W3EnhdMrxc_Ro";
+//    private final String GMAPS_API_KEY = "&key=AIzaSyB8KcL05BVdm1s5-6q56ki2Ot1PvVklu2M";
     private final String GMAPS_GEOCODE_QUERY = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
     private static Location sInstance;

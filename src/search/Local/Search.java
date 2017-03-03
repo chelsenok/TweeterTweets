@@ -2,6 +2,7 @@ package search.Local;
 
 import org.jetbrains.annotations.Nullable;
 import search.SearchListener;
+import sun.misc.FloatingDecimal;
 import tweet.Tweet;
 import tweet.TweetParser;
 
@@ -12,6 +13,11 @@ public class Search implements TweetParser {
 
     private Query mQuery;
     private SearchListener mListener;
+    private Thread mThread;
+
+    public Thread getThread() {
+        return mThread;
+    }
 
     public Search(Query query, SearchListener listener) {
         mQuery = query;
@@ -19,28 +25,31 @@ public class Search implements TweetParser {
     }
 
     public void start() {
-        try (BufferedReader br = new BufferedReader(new FileReader(mQuery.path()))) {
-            for (String line; (line = br.readLine()) != null; ) {
-                if (mListener.onTweetReady(get(line)) == 1) {
-                    return;
+        new Thread(() -> {
+            try (BufferedReader br = new BufferedReader(new FileReader(mQuery.path()))) {
+                for (String line; (line = br.readLine()) != null; ) {
+                    if (mListener.onTweetReady(get(line)) == 1) {
+                        return;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        }).start();
     }
 
     @Nullable
     @Override
     public Tweet get(String line) {String text;
-        double lat;
-        double lon;
+        float lat;
+        float lon;
         try {
             String[] parts = line.split("\t");
 
             String[] geo = parts[0].replace("[", "").replace("]", "").split(", ");
-            lat = Double.parseDouble(geo[0]);
-            lon = Double.parseDouble(geo[1]);
+            lat = Float.parseFloat(geo[0]);
+            lon = Float.parseFloat(geo[1]);
 
             return new Tweet(parts[3], lat, lon);
         } catch (Exception e) {
